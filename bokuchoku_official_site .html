@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>朴直 (Bokuchoku) - Official Cyber Hub</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800;900&family=M+PLUS+1p:wght@400;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <style>
+    :root {
+      --bg-dark: #090210;
+      --bg-card: rgba(22, 6, 38, 0.85);
+      --bg-input: rgba(14, 4, 26, 0.9);
+      --purple-main: #b800ff;
+      --purple-glow: rgba(184, 0, 255, 0.5);
+      --green-sub: #00ff66;
+      --green-glow: rgba(0, 255, 102, 0.5);
+      --yellow-sub: #ffe600;
+      --yellow-glow: rgba(255, 230, 0, 0.5);
+      --text-main: #f0f0f5;
+      --text-muted: #a395b8;
+      --font-cyber: 'Orbitron', 'M PLUS 1p', sans-serif;
+      --font-mono: 'Share Tech Mono', monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: var(--font-cyber);
+      overflow-x: hidden;
+      line-height: 1.6;
+      background-image:
+        radial-gradient(circle at 10% 20%, rgba(184, 0, 255, 0.15) 0%, transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(0, 255, 102, 0.1) 0%, transparent 40%),
+        linear-gradient(rgba(184, 0, 255, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(184, 0, 255, 0.04) 1px, transparent 1px);
+      background-size: 100% 100%, 100% 100%, 40px 40px, 40px 40px;
+      background-attachment: fixed;
+    }
+
+    /* CRT Scanline effect */
+    body::before {
+      content: " ";
+      display: block;
+      position: fixed;
+      top: 0; left: 0; bottom: 0; right: 0;
+      background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%);
+      background-size: 100% 4px;
+      z-index: 999;
+      pointer-events: none;
+      opacity: 0.4;
+    }
+
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: var(--bg-dark); }
+    ::-webkit-scrollbar-thumb { background: var(--purple-main); border-radius: 4px; box-shadow: 0 0 10px var(--purple-main); }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    section {
+      padding: 90px 0 60px;
+      position: relative;
+    }
+
+    .section-title {
+      font-size: 2.2rem;
+      font-weight: 900;
+      text-align: center;
+      margin-bottom: 40px;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      color: #fff;
+      text-shadow: 0 0 10px var(--purple-main), 0 0 20px var(--purple-main);
+    }
+
+    .section-title span {
+      color: var(--green-sub);
+      text-shadow: 0 0 10px var(--green-sub);
+    }
+
+    .section-title::after {
+      content: '';
+      display: block;
+      width: 80px;
+      height: 3px;
+      background: linear-gradient(90deg, var(--purple-main), var(--green-sub));
+      margin: 12px auto 0;
+      box-shadow: 0 0 10px var(--green-sub);
+    }
+
+    header {
+      position: fixed;
+      top: 0; left: 0; width: 100%;
+      z-index: 1000;
+      background: rgba(9, 2, 16, 0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(184, 0, 255, 0.3);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.6);
+    }
+
+    .nav-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 75px;
+    }
+
+    .logo-box {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+    }
+
+    .logo-img {
+      max-height: 48px;
+      width: auto;
+      object-fit: contain;
+      filter: drop-shadow(0 0 8px var(--purple-glow));
+    }
+
+    .nav-links {
+      display: flex;
+      list-style: none;
+      gap: 25px;
+    }
+
+    .nav-links a {
+      color: var(--text-main);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      transition: all 0.3s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--green-sub);
+      text-shadow: 0 0 8px var(--green-sub);
+    }
+
+    /* Hero Section */
+    #hero {
+      min-height: 85vh;
+      display: flex;
+      align-items: center;
+      padding-top: 110px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 40px;
+      align-items: center;
+    }
+
+    .hero-text h2 {
+      font-size: 1.1rem;
+      color: var(--green-sub);
+      text-shadow: 0 0 8px var(--green-sub);
+      font-family: var(--font-mono);
+      margin-bottom: 10px;
+      letter-spacing: 2px;
+    }
+
+    .hero-text h1 {
+      font-size: 3.6rem;
+      font-weight: 900;
+      line-height: 1.1;
+      margin-bottom: 20px;
+      background: linear-gradient(135deg, #ffffff 30%, var(--purple-main) 70%, var(--green-sub) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 0 15px var(--purple-glow));
+    }
+
+    .hero-text p {
+      color: var(--text-muted);
+      font-size: 1rem;
+      margin-bottom: 30px;
+      max-width: 520px;
+    }
+
+    .hero-avatar-wrapper {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .hero-avatar-frame {
+      width: 340px;
+      height: 340px;
+      border-radius: 50%;
+      padding: 6px;
+      background: linear-gradient(135deg, var(--purple-main), var(--green-sub), var(--yellow-sub));
+      box-shadow: 0 0 35px var(--purple-glow);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .hero-avatar-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+      background: #11001c;
+    }
+
+    /* Links Grid */
+    .links-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+    }
+
+    .cyber-btn {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      padding: 18px 25px;
+      background: var(--bg-card);
+      border: 1px solid var(--purple-main);
+      color: #fff;
+      text-decoration: none;
+      font-size: 1.05rem;
+      font-weight: 700;
+      transition: all 0.3s ease;
+      clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+    }
+
+    .cyber-btn i { font-size: 1.8rem; }
+    .cyber-btn.youtube i { color: #ff0055; }
+    .cyber-btn.x-twitter i { color: #ffffff; }
+    .cyber-btn.litlink i { color: var(--yellow-sub); }
+
+    .cyber-btn:hover {
+      border-color: var(--green-sub);
+      box-shadow: 0 0 20px var(--green-glow);
+      color: var(--green-sub);
+      transform: translateY(-3px);
+    }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 30px;
+    }
+
+    .gallery-item {
+      position: relative;
+      border: 1px solid var(--purple-main);
+      background: #000;
+      aspect-ratio: 4 / 3;
+      border-radius: 6px;
+      overflow: hidden;
+      box-shadow: 0 0 15px var(--purple-glow);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .gallery-item:hover {
+      border-color: var(--green-sub);
+      box-shadow: 0 0 25px var(--green-glow);
+      transform: scale(1.02);
+    }
+
+    .gallery-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      pointer-events: none;
+    }
+
+    .protection-overlay {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      z-index: 10;
+      background: transparent;
+    }
+
+    .ai-watermark {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      z-index: 5;
+      pointer-events: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: repeating-linear-gradient(45deg, rgba(184, 0, 255, 0.08), rgba(184, 0, 255, 0.08) 15px, rgba(0, 0, 0, 0.08) 15px, rgba(0, 0, 0, 0.08) 30px);
+    }
+
+    .watermark-text {
+      color: rgba(255, 255, 255, 0.28);
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      font-weight: bold;
+      transform: rotate(-25deg);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
+    .ai-warning-banner {
+      background: rgba(255, 230, 0, 0.08);
+      border: 1px solid var(--yellow-sub);
+      color: var(--yellow-sub);
+      padding: 12px 20px;
+      border-radius: 4px;
+      margin-bottom: 30px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 0.88rem;
+    }
+
+    /* Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(5, 1, 10, 0.94);
+      backdrop-filter: blur(15px);
+      z-index: 2000;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .modal-content {
+      max-width: 90%;
+      max-height: 85vh;
+      position: relative;
+      border: 2px solid var(--green-sub);
+      box-shadow: 0 0 35px var(--green-glow);
+      border-radius: 6px;
+      overflow: hidden;
+      background: #000;
+    }
+
+    .modal-img {
+      max-width: 100%;
+      max-height: 85vh;
+      display: block;
+      pointer-events: none;
+    }
+
+    .close-modal {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      color: var(--yellow-sub);
+      font-size: 2.2rem;
+      cursor: pointer;
+      z-index: 20;
+      text-shadow: 0 0 10px var(--yellow-glow);
+    }
+
+    .videos-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 30px;
+      margin-bottom: 40px;
+    }
+
+    .video-card {
+      background: var(--bg-card);
+      border: 1px solid var(--purple-main);
+      padding: 16px;
+      border-radius: 6px;
+      box-shadow: 0 0 15px rgba(184, 0, 255, 0.2);
+      transition: border-color 0.3s ease;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .video-card:hover {
+      border-color: var(--green-sub);
+    }
+
+    .video-card h3 {
+      font-size: 1.05rem;
+      color: #fff;
+      margin-top: 14px;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .video-card h3 i { color: #ff0055; }
+
+    .video-container {
+      position: relative;
+      width: 100%;
+      padding-top: 56.25%; /* 16:9 Aspect Ratio */
+      background: #000;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .video-container iframe {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      border: none;
+    }
+
+    .direct-watch-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      margin-top: auto;
+      padding: 10px 14px;
+      background: rgba(255, 0, 85, 0.15);
+      border: 1px solid #ff0055;
+      color: #fff;
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: bold;
+      border-radius: 4px;
+      transition: all 0.3s ease;
+    }
+
+    .direct-watch-btn:hover {
+      background: #ff0055;
+      color: #fff;
+      box-shadow: 0 0 15px rgba(255, 0, 85, 0.6);
+    }
+
+    .shorts-wrapper {
+      max-width: 360px;
+      margin: 0 auto;
+    }
+
+    .shorts-container {
+      position: relative;
+      width: 100%;
+      padding-top: 177.77%; /* 9:16 Shorts Aspect Ratio */
+      background: #000;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid var(--green-sub);
+      box-shadow: 0 0 20px var(--green-glow);
+    }
+
+    .shorts-container iframe {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      border: none;
+    }
+
+    .contact-card {
+      max-width: 750px;
+      margin: 0 auto;
+      background: var(--bg-card);
+      border: 1px solid var(--purple-main);
+      padding: 35px 30px;
+      border-radius: 8px;
+      box-shadow: 0 0 25px rgba(184, 0, 255, 0.25);
+    }
+
+    .form-group {
+      margin-bottom: 22px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--green-sub);
+      margin-bottom: 8px;
+      letter-spacing: 1px;
+      font-family: var(--font-mono);
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 14px 16px;
+      background: var(--bg-input);
+      border: 1px solid rgba(184, 0, 255, 0.5);
+      color: #fff;
+      font-family: var(--font-cyber);
+      font-size: 0.95rem;
+      border-radius: 4px;
+      transition: all 0.3s ease;
+      outline: none;
+    }
+
+    .form-control:focus {
+      border-color: var(--green-sub);
+      box-shadow: 0 0 12px var(--green-glow);
+      background: rgba(20, 8, 38, 0.95);
+    }
+
+    select.form-control option {
+      background: #090210;
+      color: #fff;
+    }
+
+    textarea.form-control {
+      min-height: 140px;
+      resize: vertical;
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 16px;
+      background: linear-gradient(135deg, var(--purple-main), #8000ff);
+      border: 1px solid var(--green-sub);
+      color: #fff;
+      font-family: var(--font-cyber);
+      font-size: 1.1rem;
+      font-weight: 900;
+      letter-spacing: 2px;
+      cursor: pointer;
+      border-radius: 4px;
+      transition: all 0.3s ease;
+      box-shadow: 0 0 15px var(--purple-glow);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .submit-btn:hover {
+      background: linear-gradient(135deg, var(--green-sub), #00cc52);
+      color: #000;
+      box-shadow: 0 0 25px var(--green-glow);
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid rgba(184, 0, 255, 0.3);
+      padding: 30px 0;
+      text-align: center;
+      background: rgba(9, 2, 16, 0.95);
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+    }
+
+    @media (max-width: 768px) {
+      .hero-grid { grid-template-columns: 1fr; text-align: center; }
+      .hero-text h1 { font-size: 2.8rem; }
+      .nav-links { display: none; }
+      .contact-card { padding: 25px 18px; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="container nav-container">
+      <a href="#" class="logo-box">
+        <img src="ROGO.png" alt="朴直" class="logo-img">
+      </a>
+      <ul class="nav-links">
+        <li><a href="#about">ABOUT</a></li>
+        <li><a href="#links">LINKS</a></li>
+        <li><a href="#gallery">GALLERY</a></li>
+        <li><a href="#videos">VIDEOS</a></li>
+        <li><a href="#contact">CONTACT</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <section id="about">
+    <div id="hero" class="container">
+      <div class="hero-grid">
+        <div class="hero-text">
+          <h2>CYBERSPACE VIRTUAL LIVER</h2>
+          <h1>朴直<br><span style="font-size: 2.2rem; color: var(--yellow-sub);">BOKUCHOKU</span></h1>
+          <p>電脳世界からクリアな歌声とリアルタイムコミュニケーションを届けるVTuber「朴直（ぼくちょく）」の公式ホームページです。</p>
+        </div>
+        <div class="hero-avatar-wrapper">
+          <div class="hero-avatar-frame">
+            <img src="tachie.png" alt="朴直 立ち絵" class="hero-avatar-img">
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="links">
+    <div class="container">
+      <h2 class="section-title">OFFICIAL <span>LINKS</span></h2>
+      <div class="links-grid">
+        <a href="https://www.youtube.com/@bokuchoku" target="_blank" rel="noopener" class="cyber-btn youtube">
+          <i class="fa-brands fa-youtube"></i>
+          <div>
+            <div>YouTube Channel</div>
+            <div style="font-size: 0.75rem; color: var(--text-muted); font-family: var(--font-mono);">@bokuchoku</div>
+          </div>
+        </a>
+        <a href="https://x.com/bokuchoku" target="_blank" rel="noopener" class="cyber-btn x-twitter">
+          <i class="fa-brands fa-x-twitter"></i>
+          <div>
+            <div>X (Twitter)</div>
+            <div style="font-size: 0.75rem; color: var(--text-muted); font-family: var(--font-mono);">@bokuchoku</div>
+          </div>
+        </a>
+        <a href="https://lit.link/bokuchoku" target="_blank" rel="noopener" class="cyber-btn litlink">
+          <i class="fa-solid fa-link"></i>
+          <div>
+            <div>lit.link</div>
+            <div style="font-size: 0.75rem; color: var(--text-muted); font-family: var(--font-mono);">lit.link/bokuchoku</div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section id="gallery">
+    <div class="container">
+      <h2 class="section-title">ILLUST <span>GALLERY</span></h2>
+      <div class="ai-warning-banner">
+        <i class="fa-solid fa-shield-halved" style="font-size: 1.4rem;"></i>
+        <div>
+          <strong>【AI学習・無断転載禁止 / NO AI LEARNING & NO REPOST】</strong><br>
+          掲載されているイラスト作品の無断スクショ、無断転載、AI学習への使用を固く禁止します。
+        </div>
+      </div>
+      <div class="gallery-grid">
+        <div class="gallery-item" onclick="openModal('illust1.png', 'イラスト1')">
+          <div class="protection-overlay" oncontextmenu="return false;"></div>
+          <div class="ai-watermark"><span class="watermark-text">DO NOT REPOST / NO AI</span></div>
+          <img src="illust1.png" alt="イラスト1" class="gallery-img">
+        </div>
+        <div class="gallery-item" onclick="openModal('illust2.png', 'イラスト2')">
+          <div class="protection-overlay" oncontextmenu="return false;"></div>
+          <div class="ai-watermark"><span class="watermark-text">DO NOT REPOST / NO AI</span></div>
+          <img src="illust2.png" alt="イラスト2" class="gallery-img">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Modal -->
+  <div id="modal" class="modal" onclick="closeModal()">
+    <div class="modal-content" onclick="event.stopPropagation()">
+      <span class="close-modal" onclick="closeModal()">&times;</span>
+      <div class="protection-overlay" oncontextmenu="return false;"></div>
+      <div class="ai-watermark"><span class="watermark-text">DO NOT REPOST / NO AI LEARNING</span></div>
+      <img id="modal-img" src="" alt="拡大表示" class="modal-img">
+    </div>
+  </div>
+
+  <section id="videos">
+    <div class="container">
+      <h2 class="section-title">FEATURED <span>VIDEOS</span></h2>
+      <div class="videos-grid">
+        <div class="video-card">
+          <div class="video-container">
+            <iframe 
+              src="https://www.youtube.com/embed/soKQbDYa-cE?rel=0" 
+              title="歌ってみた" 
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+              referrerpolicy="strict-origin-when-cross-origin" 
+              allowfullscreen>
+            </iframe>
+          </div>
+          <h3><i class="fa-solid fa-music"></i> 歌ってみた</h3>
+          <a href="https://www.youtube.com/watch?v=soKQbDYa-cE" target="_blank" rel="noopener" class="direct-watch-btn">
+            <i class="fa-brands fa-youtube"></i> YouTubeで直接再生する
+          </a>
+        </div>
+
+        <div class="video-card">
+          <div class="video-container">
+            <iframe 
+              src="https://www.youtube.com/embed/I3szkoeFHpg?rel=0" 
+              title="コラボ配信" 
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+              referrerpolicy="strict-origin-when-cross-origin" 
+              allowfullscreen>
+            </iframe>
+          </div>
+          <h3><i class="fa-solid fa-users"></i> コラボ配信</h3>
+          <a href="https://www.youtube.com/watch?v=I3szkoeFHpg" target="_blank" rel="noopener" class="direct-watch-btn">
+            <i class="fa-brands fa-youtube"></i> YouTubeで直接再生する
+          </a>
+        </div>
+      </div>
+
+      <h2 class="section-title" style="font-size: 1.6rem; margin-top: 40px;">YOUTUBE <span>SHORTS</span></h2>
+      <div class="shorts-wrapper">
+        <div class="video-card">
+          <div class="shorts-container">
+            <iframe 
+              src="https://www.youtube.com/embed/nePhC5ba1o4?rel=0" 
+              title="YouTube Shorts" 
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+              referrerpolicy="strict-origin-when-cross-origin" 
+              allowfullscreen>
+            </iframe>
+          </div>
+          <h3 style="justify-content: center; margin-top: 15px;"><i class="fa-brands fa-youtube" style="color:#ff0055;"></i> ショート動画</h3>
+          <a href="https://www.youtube.com/shorts/nePhC5ba1o4" target="_blank" rel="noopener" class="direct-watch-btn">
+            <i class="fa-brands fa-youtube"></i> ShortsをYouTubeで開く
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="container">
+      <h2 class="section-title">INQUIRY <span>FORM</span></h2>
+      <div class="contact-card">
+        <form action="https://formspree.io/f/xbgdjngk" method="POST">
+          <div class="form-group">
+            <label for="name"><i class="fa-solid fa-user"></i> お名前 (Name) *</label>
+            <input type="text" id="name" name="name" class="form-control" placeholder="朴直 太郎" required>
+          </div>
+
+          <div class="form-group">
+            <label for="email"><i class="fa-solid fa-envelope"></i> メールアドレス (Email) *</label>
+            <input type="email" id="email" name="email" class="form-control" placeholder="yourname@example.com" required>
+          </div>
+
+          <div class="form-group">
+            <label for="subject"><i class="fa-solid fa-tag"></i> 件名 / ご要件 (Subject) *</label>
+            <select id="subject" name="subject" class="form-control" required>
+              <option value="" disabled selected>選択してください</option>
+              <option value="案件・お仕事のご依頼">案件・お仕事のご依頼</option>
+              <option value="コラボのご相談">コラボのご相談</option>
+              <option value="メディア・取材のお問い合わせ">メディア・取材のお問い合わせ</option>
+              <option value="その他のお問い合わせ">その他のお問い合わせ</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="message"><i class="fa-solid fa-pen-to-square"></i> お問い合わせ内容 (Message) *</label>
+            <textarea id="message" name="message" class="form-control" placeholder="お問い合わせ内容をご記入ください..." required></textarea>
+          </div>
+
+          <button type="submit" class="submit-btn">
+            <i class="fa-solid fa-paper-plane"></i> メッセージを送信する
+          </button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <p>&copy; 2026 朴直 (Bokuchoku). All Rights Reserved.</p>
+    </div>
+  </footer>
+
+  <script>
+    function openModal(imgSrc, altText) {
+      const modal = document.getElementById("modal");
+      const modalImg = document.getElementById("modal-img");
+      modalImg.src = imgSrc;
+      modalImg.alt = altText;
+      modal.style.display = "flex";
+    }
+
+    function closeModal() {
+      document.getElementById("modal").style.display = "none";
+    }
+
+    // Anti-copy / right-click protection on gallery elements
+    document.addEventListener("contextmenu", function(e) {
+      if (e.target.classList.contains("protection-overlay") || e.target.classList.contains("gallery-img")) {
+        e.preventDefault();
+      }
+    });
+  </script>
+</body>
+</html>
